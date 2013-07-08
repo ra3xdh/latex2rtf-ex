@@ -43,6 +43,8 @@ Authors:
 #include "lengths.h"
 #include "definitions.h"
 #include "graphics.h"
+#include "tikz.h"
+
 
 typedef struct commandtag {
 	char	*cpCommand;			/* LaTeX command name without \ */
@@ -567,6 +569,7 @@ static CommandArray params[] = {
 	{"picture", CmdPicture, 0},
 	{"minipage", CmdMinipage, 0},
 	{"music", CmdMusic, 0},
+	{"tikzpicture",CmdTikzPicture, 0},
 
 	{"quote", CmdQuote, QUOTE},
 	{"quotation", CmdQuote, QUOTATION},
