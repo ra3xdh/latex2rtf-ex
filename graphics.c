@@ -870,7 +870,7 @@ out:
 	fclose(fp);
 }
 
-static void
+void
 PutPdfFile(char *s, double scale, double baseline, int full_path)
 {
 	char *png;

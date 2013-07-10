@@ -73,7 +73,7 @@ void CmdTikzPicture(int code)
 void TikzToPng(char *tikzcode,char *exts)
 {
         char *fullname, *tmp_dir, *texname, *auxname, *logname,
-	        *pdfname, *pngname;
+	        *pdfname;
 
         FILE *f;
 	static int file_number = 0;
@@ -87,7 +87,6 @@ void TikzToPng(char *tikzcode,char *exts)
 	fullname = strdup_together(tmp_dir,name);
 	texname = strdup_together(fullname,".tex");
 	pdfname = strdup_together(fullname,".pdf");
-	pngname = strdup_together(fullname,".png");
 	auxname = strdup_together(fullname,".aux");
 	logname = strdup_together(fullname,".log");
 
@@ -98,7 +97,7 @@ void TikzToPng(char *tikzcode,char *exts)
         fprintf(f,"\\documentclass[varwidth=true,border=10pt]{standalone}\n");
         fprintf(f,"\\usepackage{mathtext}\n");
         fprintf(f,"\\usepackage[T2A]{fontenc}\n");
-        fprintf(f,"\\usepackage[koi8-r]{inputenc}\n");
+        fprintf(f,"\\usepackage[%s]{inputenc}\n",g_charset_encoding_name);
         fprintf(f,"\\usepackage[russian]{babel}\n");
 
         fprintf(f,"\\usepackage{tikz}\n");
@@ -122,29 +121,26 @@ void TikzToPng(char *tikzcode,char *exts)
 
         printf("%s\n",texname);
 
-        int cmd_len = strlen("pdflatex") + strlen(texname)+32;
+        int cmd_len = strlen("pdflatex") + strlen(texname)+32+strlen(" >/dev/null");
 	char *cmd = (char *)malloc(cmd_len);
 
-        snprintf(cmd, cmd_len, "pdflatex %s",texname);
+        snprintf(cmd, cmd_len, "pdflatex %s >/dev/null",texname);
 	printf(cmd);
-	free(cmd);
 
-        cmd_len = strlen("convert  -background \"rgba(255,255,255,255)\" -flatten -resample 300")
-	                       + strlen(pdfname)+32;
-	cmd = (char *)malloc(cmd_len);
+        char *oldcwd = (char *)malloc(1024);
+	getcwd(oldcwd,1024);
+	printf(oldcwd);
+	chdir(tmp_dir);
+	int err = system(cmd);
+	chdir(oldcwd);
+	free(oldcwd);
 
-        snprintf(cmd, cmd_len, "convert %s -background \"rgba(255,255,255,255)\" -flatten -resample 300 %s",
-	                                texname,pngname);
-	printf(cmd);
-	free(cmd);
-
-        //PutPngFile(pngname,g_png_figure_scale,0,TRUE);
+	if (!err) PutPdfFile(pdfname,g_png_figure_scale,0,TRUE);
 
         free(fullname);
 	free(texname);
 	free(auxname);
 	free(pdfname);
-	free(pngname);
 	free(logname);
 	free(tmp_dir);
 }
