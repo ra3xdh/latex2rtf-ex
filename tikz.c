@@ -41,7 +41,7 @@ Authors:
 #include "equation.h"
 #include "funct1.h"
 
-
+void TikzToPng(char *tikzcode, char *exts);
 
 void CmdTikzPicture(int code)
 /******************************************************************************
@@ -49,19 +49,102 @@ void CmdTikzPicture(int code)
            by converting to png image and inserting
  ******************************************************************************/
 {
-	char *pre, *post, *picture;	
-	
+	char *pre, *post, *tikzcode, *param;	
+
+
+	param = getBracketParam();
+	printf("\n %s \n",param);
+
 	if (code & ON) {
 		pre = strdup("\\begin{tikzpicture}");
 		post = strdup("\\end{tikzpicture}");
-		picture=getTexUntil(post,0);
-		printf(picture);
+		tikzcode=getTexUntil(post,0);
+		//printf(tikzcode);
+		TikzToPng(tikzcode,param);
 		//WriteLatexAsBitmap(pre,picture,post);
 		ConvertString(post);  /* to balance the \begin{picture} */
 		free(pre);
 		free(post);
-		free(picture);
+		free(tikzcode);
+		free(param);
 	}
 }
 
+void TikzToPng(char *tikzcode,char *exts)
+{
+        char *fullname, *tmp_dir, *texname, *auxname, *logname,
+	        *pdfname, *pngname;
 
+        FILE *f;
+	static int file_number = 0;
+
+        char name[15];
+
+	file_number++;
+
+        tmp_dir = getTmpPath();
+	snprintf(name,15,"t2p_%04d",file_number);
+	fullname = strdup_together(tmp_dir,name);
+	texname = strdup_together(fullname,".tex");
+	pdfname = strdup_together(fullname,".pdf");
+	pngname = strdup_together(fullname,".png");
+	auxname = strdup_together(fullname,".aux");
+	logname = strdup_together(fullname,".log");
+
+
+	f = fopen(texname, "w");
+
+        
+        fprintf(f,"\\documentclass[varwidth=true,border=10pt]{standalone}\n");
+        fprintf(f,"\\usepackage{mathtext}\n");
+        fprintf(f,"\\usepackage[T2A]{fontenc}\n");
+        fprintf(f,"\\usepackage[koi8-r]{inputenc}\n");
+        fprintf(f,"\\usepackage[russian]{babel}\n");
+
+        fprintf(f,"\\usepackage{tikz}\n");
+
+        fprintf(f,"\\begin{document}\n");
+
+        fprintf(f,"\\usetikzlibrary{circuits}\n");
+        fprintf(f,"\\usetikzlibrary{circuits.ee}\n");
+        fprintf(f,"\\usetikzlibrary{circuits.ee.IEC}\n");
+        fprintf(f,"\\usetikzlibrary{arrows}\n");
+        fprintf(f,"\\usetikzlibrary{patterns}\n");
+
+        fprintf(f,"\\begin{tikzpicture}[%s]\n",exts);
+        
+	fprintf(f,"\n%s\n",tikzcode);
+
+	fprintf(f,"\\end{tikzpicture}\n");
+	fprintf(f,"\\end{document}\n");
+
+        fclose(f);
+
+        printf("%s\n",texname);
+
+        int cmd_len = strlen("pdflatex") + strlen(texname)+32;
+	char *cmd = (char *)malloc(cmd_len);
+
+        snprintf(cmd, cmd_len, "pdflatex %s",texname);
+	printf(cmd);
+	free(cmd);
+
+        cmd_len = strlen("convert  -background \"rgba(255,255,255,255)\" -flatten -resample 300")
+	                       + strlen(pdfname)+32;
+	cmd = (char *)malloc(cmd_len);
+
+        snprintf(cmd, cmd_len, "convert %s -background \"rgba(255,255,255,255)\" -flatten -resample 300 %s",
+	                                texname,pngname);
+	printf(cmd);
+	free(cmd);
+
+        //PutPngFile(pngname,g_png_figure_scale,0,TRUE);
+
+        free(fullname);
+	free(texname);
+	free(auxname);
+	free(pdfname);
+	free(pngname);
+	free(logname);
+	free(tmp_dir);
+}
