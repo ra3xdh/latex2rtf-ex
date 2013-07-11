@@ -41,6 +41,12 @@ Authors:
 #include "equation.h"
 #include "funct1.h"
 
+
+static char *tikzlibs[32];     
+static int tikzlibsnum = 0;
+
+
+
 void TikzToPng(char *tikzcode, char *exts);
 
 void CmdTikzPicture(int code)
@@ -104,11 +110,16 @@ void TikzToPng(char *tikzcode,char *exts)
 
         fprintf(f,"\\begin{document}\n");
 
-        fprintf(f,"\\usetikzlibrary{circuits}\n");
+        int i;
+	for (i=0;i<tikzlibsnum;i++) {
+	    fprintf(f,"\\usetikzlibrary{%s}\n",tikzlibs[i]);
+	}
+
+        /*fprintf(f,"\\usetikzlibrary{circuits}\n");
         fprintf(f,"\\usetikzlibrary{circuits.ee}\n");
         fprintf(f,"\\usetikzlibrary{circuits.ee.IEC}\n");
         fprintf(f,"\\usetikzlibrary{arrows}\n");
-        fprintf(f,"\\usetikzlibrary{patterns}\n");
+        fprintf(f,"\\usetikzlibrary{patterns}\n");*/
 
         fprintf(f,"\\begin{tikzpicture}[%s]\n",exts);
         
@@ -143,4 +154,14 @@ void TikzToPng(char *tikzcode,char *exts)
 	free(pdfname);
 	free(logname);
 	free(tmp_dir);
+}
+
+void CmdTikzlib(int code)
+{
+       
+       char *tikzlib = getBraceParam();
+
+       tikzlibsnum++;
+
+       tikzlibs[tikzlibsnum-1]=tikzlib;
 }

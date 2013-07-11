@@ -31,6 +31,8 @@ void 			CmdFrenchAbbrev(int code);
 void			CmdCzechAbbrev(int code);
 void            CmdCyrillicChar(int code);
 void 			CmdCyrillicStrChar(char *s);
+void CmdNo(int code);
+
 
 #define IERF 1
 #define IEREF 2

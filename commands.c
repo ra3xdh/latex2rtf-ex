@@ -166,6 +166,7 @@ static CommandArray commands[] = {
 	{"c", CmdCedillaChar, 0},
 	{"i", CmdDotlessChar, 0},
 	{"j", CmdDotlessChar, 1},
+	{"No",CmdNo,0},
 
 /* sectioning commands */
 	{"part", CmdSection, SECT_PART},
@@ -324,6 +325,7 @@ static CommandArray commands[] = {
 	{"textcolor", CmdTextColor, 0},
 	{"citename", CmdCiteName, 0},
 	{"shortcite", CmdCite, CITE_SHORT},
+	{"usetikzlibrary",CmdTikzlib, 0},
 
 	{"", NULL, 0}
 };

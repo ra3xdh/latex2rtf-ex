@@ -986,3 +986,8 @@ void CmdCyrillicStrChar(char *s)
 		fprintRTF("\\\'%s", s);
 }
 
+
+void CmdNo(int code)
+{
+        fprintRTF("\\u8470\\'e2");
+}
