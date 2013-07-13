@@ -1,3 +1,17 @@
+Проект представляет собой доработку проекта latex2rtf для преобразования
+файлов TeX в RTF-файлы. Проект основан на коде latex2rtf версии 2.19
+
+В настоящий момент реализовано:
+ - обработка рисунков TikZ
+ - обработка некоторых символов
+ 
+В дальнейшем будут добавлена поддержка ещё некоторых популярных пакетов.
+
+-----
+
+С наилучшими пожеланиями, Кузнецов В.В.
+
+
 latex2rtf is a translator program that translates LaTeX text into the
 RTF format used by various text processors, most notably Word.
 

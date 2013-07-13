@@ -65,9 +65,7 @@ void CmdTikzPicture(int code)
 		pre = strdup("\\begin{tikzpicture}");
 		post = strdup("\\end{tikzpicture}");
 		tikzcode=getTexUntil(post,0);
-		//printf(tikzcode);
 		TikzToPng(tikzcode,param);
-		//WriteLatexAsBitmap(pre,picture,post);
 		ConvertString(post);  /* to balance the \begin{picture} */
 		free(pre);
 		free(post);
@@ -107,6 +105,7 @@ void TikzToPng(char *tikzcode,char *exts)
         fprintf(f,"\\usepackage[russian]{babel}\n");
 
         fprintf(f,"\\usepackage{tikz}\n");
+	fprintf(f,"\\usepackage{gnuplot-lua-tikz}\n");
 
         fprintf(f,"\\begin{document}\n");
 
@@ -115,11 +114,6 @@ void TikzToPng(char *tikzcode,char *exts)
 	    fprintf(f,"\\usetikzlibrary{%s}\n",tikzlibs[i]);
 	}
 
-        /*fprintf(f,"\\usetikzlibrary{circuits}\n");
-        fprintf(f,"\\usetikzlibrary{circuits.ee}\n");
-        fprintf(f,"\\usetikzlibrary{circuits.ee.IEC}\n");
-        fprintf(f,"\\usetikzlibrary{arrows}\n");
-        fprintf(f,"\\usetikzlibrary{patterns}\n");*/
 
         fprintf(f,"\\begin{tikzpicture}[%s]\n",exts);
         
@@ -130,23 +124,25 @@ void TikzToPng(char *tikzcode,char *exts)
 
         fclose(f);
 
-        printf("%s\n",texname);
 
         int cmd_len = strlen("pdflatex") + strlen(texname)+32+strlen(" >/dev/null");
 	char *cmd = (char *)malloc(cmd_len);
 
         snprintf(cmd, cmd_len, "pdflatex %s >/dev/null",texname);
-	printf(cmd);
 
         char *oldcwd = (char *)malloc(1024);
 	getcwd(oldcwd,1024);
-	printf(oldcwd);
 	chdir(tmp_dir);
 	int err = system(cmd);
 	chdir(oldcwd);
 	free(oldcwd);
 
-	if (!err) PutPdfFile(pdfname,g_png_figure_scale,0,TRUE);
+        if (!err) PutPdfFile(pdfname,g_png_figure_scale,0,TRUE);
+
+        remove(texname);
+	remove(auxname);
+	remove(pdfname);
+	remove(logname);
 
         free(fullname);
 	free(texname);
@@ -156,7 +152,7 @@ void TikzToPng(char *tikzcode,char *exts)
 	free(tmp_dir);
 }
 
-void CmdTikzlib(int code)
+void CmdTikzlib(int code) //Запомнить библиотеку Tikz
 {
        
        char *tikzlib = getBraceParam();
