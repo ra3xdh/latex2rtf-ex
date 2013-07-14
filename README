@@ -31,15 +31,9 @@ To install (on a UNIX system)
 - make check   (expect warnings but no errors)
 - make install
 
-Reporting bugs to the homepage at Sourceforge
+Reporting bugs to the homepage at Github
 
-              http://sourceforge.net/projects/latex2rtf/
+              http://github.com/ra3xdh/latex2rtf-ex
+or via e-mail:
+              ra3xdh@gmail.com
 
-* Please verify your bug with the most recent version of the program.
-* Please provide the version of the program you are using
-* Please provide your operating system and version number
-* Provide a short latex file that exhibits the bug.  It is
-  imperative that you spend time isolating the problem into a small
-  latex file.  This shows that you actually care enough about the 
-  problem to spend some of your time trying to help isolate the bug.
-* Be patient.  Provide patches.  Enjoy.
