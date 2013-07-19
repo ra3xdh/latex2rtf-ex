@@ -120,6 +120,7 @@ void            CmdCounter(int code);
 
 void            CmdLength(int code);
 void            CmdCaption(int code);
+void            CmdCaptionof(int code);
 void            CmdBox(int code);
 void            CmdVerb(int code);
 void            CmdVerbatim(int code);

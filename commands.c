@@ -190,6 +190,7 @@ static CommandArray commands[] = {
 	{"noindent", CmdIndent, INDENT_NONE},
 	{"indent", CmdIndent, INDENT_USUAL},
 	{"caption", CmdCaption, 0},
+	{"captionof",CmdCaptionof,0},
 	{"appendix", CmdIgnore, 0},
 	{"protect", CmdIgnore, 0},
 	{"clearpage", CmdNewPage, NewPage},

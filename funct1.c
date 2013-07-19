@@ -971,6 +971,79 @@ CmdCaption(int code)
 	diagnostics(4, "exiting CmdCaption");
 }
 
+
+void
+CmdCaptionof(int code)
+/******************************************************************************
+ purpose: converts \captionof from LaTeX to Rtf
+ ******************************************************************************/
+{
+	char           *thecaption;
+	char           *lst_entry;
+	int				n,vspace;
+	char   			old_align;
+	char			number[20];
+	
+	old_align = alignment;
+	alignment = CENTERED;
+
+	//lst_entry = getBracketParam();
+	
+	/*if (lst_entry) {
+		diagnostics(4, "entering CmdCaption [%s]", lst_entry);
+		free(lst_entry);
+	} else
+		diagnostics(4, "entering CmdCaption");
+        */
+	if (GetTexMode()!=MODE_VERTICAL)
+		CmdEndParagraph(0);
+	vspace = getLength("abovecaptionskip");
+	DirectVspace(vspace);
+	CmdStartParagraph(FIRST_PAR);
+	fprintRTF("{");
+
+
+        char *type = getBraceParam();
+
+	if (!(strcmp(type,"figure"))) {
+		incrementCounter("figure");
+		ConvertBabelName("FIGURENAME");
+		n = getCounter("figure");
+	} else {
+		incrementCounter("table");
+		ConvertBabelName("TABLENAME");
+		n = getCounter("table");
+	}
+	free(type);
+
+	fprintRTF(" ");
+	if (g_document_type != FORMAT_ARTICLE) 
+		snprintf(number, 20, "%d.%d", getCounter("chapter"), n);
+	else
+		snprintf(number, 20, "%d", n);
+	
+	/*if (g_processing_figure && g_figure_label)
+		InsertBookmark(g_figure_label, number);
+	
+	else if (g_processing_table && g_table_label)
+		InsertBookmark(g_table_label, number);
+	
+	else*/
+		fprintRTF("%s", number);
+
+	fprintRTF(":  ");
+	thecaption = getBraceParam();
+	diagnostics(4, "in CmdCaption [%s]", thecaption);
+	ConvertString(thecaption);
+	free(thecaption);
+	fprintRTF("}");
+	CmdEndParagraph(0);
+	vspace = getLength("belowcaptionskip")+getLength("textfloatsep");
+	DirectVspace(vspace);
+	alignment = old_align;
+	diagnostics(4, "exiting CmdCaption");
+}
+
 void
 CmdCounter(int code)
 /******************************************************************************
