@@ -582,6 +582,7 @@ static CommandArray params[] = {
 	{"description", CmdList, DESCRIPTION},
 	{"verbatim", CmdVerbatim, VERBATIM_1},
 	{"comment", CmdVerbatim, VERBATIM_4},
+	{"lstlisting", CmdVerbatim, VERBATIM_5},
 	{"verse", CmdVerse, 0},
 	{"tabular", CmdTabular, TABULAR},
 	{"tabular*", CmdTabular, TABULAR_STAR},

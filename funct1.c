@@ -1429,8 +1429,8 @@ CmdVerbatim(int code)
 			CmdEndParagraph(0);
 			CmdIndent(INDENT_NONE);
 			CmdStartParagraph(FIRST_PAR);
-			num = TexFontNumber("Typewriter");
-			fprintRTF("\\pard\\ql\\b0\\i0\\scaps0\\f%d ", num);
+			//num = TexFontNumber("Typewriter");
+			//fprintRTF("\\pard\\ql\\b0\\i0\\scaps0\\f%d ", num);
 		}
 		
 		switch (true_code) {
@@ -1446,6 +1446,9 @@ CmdVerbatim(int code)
 			case VERBATIM_4 :
 				endtag = strdup("\\end{comment}");
 				break;
+			case VERBATIM_5 :
+				endtag = strdup("\\end{lstlisting}");
+				break;
 		}
 			
 		verbatim_text = getTexUntil(endtag, 1);
@@ -1456,11 +1459,15 @@ CmdVerbatim(int code)
 
 			ConvertAllttString(verbatim_text);
 
-		else if (true_code == VERBATIM_1 || true_code == VERBATIM_2) {
+		else if (true_code == VERBATIM_1 || true_code == VERBATIM_2 || true_code == VERBATIM_5) {
 		
 			while (*vptr) {
 				diagnostics(5, "Verbatim character <%c>", *vptr);
-				putRtfChar(*vptr++);
+				//putRtfChar(*vptr++);
+				char sym = *vptr++;
+				printf ("%d ",sym);
+				if (sym < 0) WriteEightBitChar(sym);
+				else putRtfChar(sym);
 			}
 		}
 		

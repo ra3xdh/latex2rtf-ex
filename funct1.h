@@ -49,6 +49,7 @@ This file is available from http://sourceforge.net/projects/latex2rtf/
 #define VERBATIM_2   2
 #define VERBATIM_3   3
 #define VERBATIM_4   4
+#define VERBATIM_5   5
       
 #define VERB_VERB    1
 #define VERB_STAR    2
