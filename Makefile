@@ -3,7 +3,7 @@
 CC=gcc
 MKDIR=mkdir -p
 
-CFLAGS:=-DUNIX
+CFLAGS:=-DUNIX   
 #CFLAGS:=-DMSDOS         #Windows/DOS
 #CFLAGS:=-DMAC_CLASSIC   #MacOS 8/9
 #CFLAGS:=-DOS2           #OS/2
@@ -21,7 +21,7 @@ CFLAGS:=-DUNIX
 PREFIX=$(PREFIX_DRIVE)/usr/local
 
 #Name of executable binary --- beware of 8.3 restriction under DOS
-BINARY_NAME=latex2rtf$(EXE_SUFFIX)
+BINARY_NAME=latex2rtf-ex$(EXE_SUFFIX)
 
 # Location of binary, man, info, and support files - adapt as needed
 BIN_INSTALL=$(PREFIX)/bin

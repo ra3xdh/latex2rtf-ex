@@ -1465,7 +1465,6 @@ CmdVerbatim(int code)
 				diagnostics(5, "Verbatim character <%c>", *vptr);
 				//putRtfChar(*vptr++);
 				char sym = *vptr++;
-				printf ("%d ",sym);
 				if (sym < 0) WriteEightBitChar(sym);
 				else putRtfChar(sym);
 			}
@@ -2051,6 +2050,9 @@ CmdInclude(int code)
 	int i;
 
 	cNext = getNonSpace();
+
+	
+	printf("Pash_source_called\n");
 	
 	if (cNext == '{') {			/* \input{gnu} or \include{gnu} */
 		ungetTexChar(cNext);
@@ -2070,6 +2072,8 @@ CmdInclude(int code)
 		free(s);
 		s = t;
 	}
+
+	printf("Pash_source_called\n");
 
 	if (PushSource(s,NULL)==0)
 		diagnostics(WARNING, "Including file <%s>",t);

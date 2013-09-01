@@ -57,9 +57,7 @@ void CmdTikzPicture(int code)
 {
 	char *pre, *post, *tikzcode, *param;	
 
-
 	param = getBracketParam();
-	printf("\n %s \n",param);
 
 	if (code & ON) {
 		pre = strdup("\\begin{tikzpicture}");
@@ -115,7 +113,10 @@ void TikzToPng(char *tikzcode,char *exts)
 	}
 
 
+        if (exts!=NULL)
         fprintf(f,"\\begin{tikzpicture}[%s]\n",exts);
+	else 
+        fprintf(f,"\\begin{tikzpicture}\n");
         
 	fprintf(f,"\n%s\n",tikzcode);
 

@@ -204,8 +204,9 @@ static CommandArray commands[] = {
 	{"parbox", CmdBox, BOX_PARBOX},
 	{"frenchspacing", CmdIgnore, 0},
 	{"nonfrenchspacing", CmdIgnore, 0},
-	{"include", CmdIgnoreParameter, No_Opt_One_NormParam},	/* should not happen*/
-	{"input", CmdIgnoreParameter, No_Opt_One_NormParam},	/* should not happen*/
+	//{"include", CmdIgnoreParameter, No_Opt_One_NormParam},	/* should not happen*/
+	//{"input", CmdIgnoreParameter, No_Opt_One_NormParam},	/* should not happen*/
+	{"input", CmdInclude, 0},
 	{"verb", CmdVerb, VERB_VERB},
 	{"verb*", CmdVerb, VERB_STAR},
 	{"url", CmdVerb, VERB_URL},
