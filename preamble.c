@@ -73,7 +73,7 @@ setPackageBabel(char * option)
 			PushEnvironment(GERMAN_MODE);
 			ReadLanguage("german");
 	}
-	
+
 	if (strcmp(option, "french") == 0 ||
 	    strcmp(option, "frenchb") == 0)
 	{
@@ -81,7 +81,7 @@ setPackageBabel(char * option)
 		PushEnvironment(FRENCH_MODE);
 		ReadLanguage("french");
 	}
-		
+
 	if (strcmp(option, "russian") == 0)
 	{
 		RussianMode = TRUE;
@@ -97,7 +97,7 @@ setPackageBabel(char * option)
 		g_fcharset_number=238;  			/* East European in RTF Specification */
 		strcpy(g_charset_encoding_name, "raw");
 	}
-		
+
 }
 
 void
@@ -107,7 +107,7 @@ setPackageInputenc(char * option)
 
 	if (strcmp(option, "ansinew") == 0)
 		strcpy(g_charset_encoding_name, "cp1252");
-		
+
 	else if (strcmp(option, "applemac") == 0 ||
 	         strcmp(option, "decmulti") == 0 ||
 	         strcmp(option, "latin1") == 0   ||
@@ -141,7 +141,7 @@ setPackageInputenc(char * option)
 	         strcmp(option, "macukr") == 0   ||
 	         strcmp(option, "koi8-r") == 0   ||
 	         strcmp(option, "koi8-u") == 0) {
-	         
+
 		strcpy(g_charset_encoding_name, option);
 		g_fcharset_number = 0;				/* ANSI in RTF Specification */
 
@@ -180,7 +180,7 @@ int fnumber=-1;
 
 	if (strcmp(font, "palatino") == 0)
 		fnumber = RtfFontNumber("Palatino");
-		
+
 	else if (strstr(font, "times") )
 			fnumber = RtfFontNumber("Times");
 
@@ -211,7 +211,7 @@ static void
 setThree(char * s, int ten, int eleven, int twelve)
 {
 	int n = DefaultFontSize();
-	
+
 	if (n==20)
 		setLength(s, ten*20);
 	else if (n==22)
@@ -228,9 +228,9 @@ setPaperSize(char * option)
 {
 	if (strcmp(option, "landscape") == 0) {
 		g_preambleLandscape = TRUE;
-		
+
 	} else if (strcmp(option, "a4paper") == 0 ) {
-	
+
 		setLength("pageheight",  845*20);
 		setLength("hoffset",       0*20);
 		setThree("oddsidemargin",53,46,31);
@@ -248,7 +248,7 @@ setPaperSize(char * option)
 		setLength("columnsep",    10*20);
 
 	} else if (strcmp(option, "a4") == 0) {
-	
+
 		setLength("pageheight",  845*20);
 		setLength("hoffset",       0*20);
 		setThree("oddsidemargin",40,33,14);
@@ -387,7 +387,7 @@ setDocumentOptions(char *optionlist)
 ******************************************************************************/
 {
 	char           *option;
-	
+
 	option = strtok(optionlist, ",");
 
 	while (option) {
@@ -471,10 +471,10 @@ CmdDocumentStyle(int code)
 
 	options_with_spaces = getBracketParam();
 	format_with_spaces = getBraceParam();
-	
+
 	format = strdup_noblanks(format_with_spaces);
 	free(format_with_spaces);
-	
+
 	if (options_with_spaces)
 		diagnostics(4, "Documentstyle/class[%s]{%s}", options_with_spaces,format);
 	else
@@ -483,7 +483,7 @@ CmdDocumentStyle(int code)
 	g_document_type = FORMAT_ARTICLE;
 	if (strcmp(format, "book") == 0)
 		g_document_type = FORMAT_BOOK;
-		
+
 	else if (strcmp(format, "report") == 0)
 		g_document_type = FORMAT_REPORT;
 
@@ -498,7 +498,7 @@ CmdDocumentStyle(int code)
 
 	else 
 		fprintf(stderr, "\nDocument format <%s> unknown, using article format", format);
-	
+
 	if (options_with_spaces) {
 		options = strdup_noblanks(options_with_spaces);
 		free(options_with_spaces);
@@ -522,7 +522,7 @@ CmdUsepackage(int code)
 	package_with_spaces = getBraceParam();
 	package = strdup_noblanks(package_with_spaces);
 	free(package_with_spaces);
-	
+
 	if (options_with_spaces){
 		options = strdup_noblanks(options_with_spaces);
 		free(options_with_spaces);
@@ -532,13 +532,13 @@ CmdUsepackage(int code)
 
 	if (strcmp(package, "inputenc") == 0  && options)
 		setPackageInputenc(options);
-		
+
 	else if (strcmp(package, "isolatin1") == 0)
 		setPackageInputenc("latin1");
 
 	else if (strcmp(package, "babel") == 0) {
 		if (options) setPackageBabel(options);	
-			
+
 	} else if (strcmp(package, "german" )  == 0 ||
 		     strcmp(package, "ngerman")  == 0 ||
 		     strcmp(package, "czech"  )  == 0 ||
@@ -560,9 +560,11 @@ CmdUsepackage(int code)
 		if (strstr(options, "")) set_longnamesfirst();
 		PushEnvironment(NATBIB_MODE);
 		g_document_bibstyle = BIBSTYLE_NATBIB;
+	} else if (strcmp(package, "caption") == 0) {
+	        setPackageCaption(options);
 	} else
 		setDocumentOptions(package);
-	
+
 	if (options)
 		free(options);
 	free(package);
@@ -621,12 +623,12 @@ CmdMakeTitle(int code)
 	if (g_preambleAuthor != NULL && strcmp(g_preambleAuthor, "") != 0)
 		ConvertString(g_preambleAuthor);
 	fprintRTF("}");
-	
+
 	fprintRTF("\n\\par\\qc {%s ", date_begin);
 	if (g_preambleDate != NULL && strcmp(g_preambleDate, "") != 0)
 		ConvertString(g_preambleDate);
 	fprintRTF("}");
-	
+
 	CmdEndParagraph(0);
 	alignment = JUSTIFIED;
 
@@ -643,10 +645,10 @@ CmdPreambleBeginEnd(int code)
 ***************************************************************************/
 {
 	char           *cParam = getBraceParam();
-	
+
 	if (strcmp(cParam,"document"))
 		diagnostics(ERROR, "\\begin{%s} found before \\begin{document}.  Giving up.  Sorry", cParam);
-		
+
 	CallParamFunc(cParam, ON);
 	free(cParam);
 }
@@ -662,7 +664,7 @@ PlainPagestyle(void)
 {
 	int fn = DefaultFontFamily();
 	pagenumbering = TRUE;
-	
+
 	if (g_preambleTwoside) {
 		fprintRTF("\n{\\footerr");
 		fprintRTF("\\pard\\plain\\f%d\\qc",fn);
@@ -812,17 +814,17 @@ WriteFontHeader(void)
 	config_handle = CfgStartIterate(FONT_A);
 	i=3;
 	while ((config_handle = CfgNext(FONT_A, config_handle)) != NULL) {
-	
+
 		font_type = (char *)(*config_handle)->TexCommand;
 		font_name = (char *)(*config_handle)->RtfCommand;
 		charset = g_fcharset_number;
-		
+
 		if (strncmp(font_name, "Symbol", 6)==0)
 			charset = 2;
-			
+
 		if (strncmp(font_type, "Cyrillic", 8)==0)	
 			charset = 204;
-					
+
 		fprintRTF("{\\f%d\\fnil\\fcharset%d %s;}\n",i, charset, font_name);
 
 		i++;
@@ -853,9 +855,9 @@ WriteStyleHeader(void)
 {
 	ConfigEntryT **style;
 	const char *rtf;
-	
+
 	fprintRTF("{\\stylesheet\n{\\s0\\fs%d\\snext0 Normal;}\n", CurrentFontSize());
-	
+
 	style = CfgStartIterate(STYLE_A);
 	while ((style = CfgNext(STYLE_A, style)) != NULL) {
 		rtf = (*style)->RtfCommand;
@@ -911,7 +913,7 @@ WritePageSize(void)
 	n = getLength("pageheight") - (n + getLength("textheight") + getLength("footskip"));
 	fprintRTF("\\margb%d", n);
 	diagnostics(4, "Writepagesize bottom margin =%d pt", n/20);
-	
+
 	fprintRTF("\\pgnstart%d", getCounter("page"));
 	fprintRTF("\\widowctrl\\qj\\ftnbj\n");
 }
@@ -936,11 +938,11 @@ WriteHeadFoot(void)
   		
 		if (g_preambleLFOOT)
 			ConvertString(g_preambleLFOOT);
-		
+
 		fprintRTF("\\tab ");
 		if (g_preambleCFOOT)
 			ConvertString(g_preambleCFOOT);
-		
+
 		if (g_preambleRFOOT) {
 			fprintRTF("\\tab ");
 			ConvertString(g_preambleRFOOT);
@@ -954,11 +956,11 @@ WriteHeadFoot(void)
   		
 		if (g_preambleLHEAD)
 			ConvertString(g_preambleLHEAD);
-		
+
 		fprintRTF("\\tab ");
 		if (g_preambleCHEAD)
 			ConvertString(g_preambleCHEAD);
-		
+
 		if (g_preambleRHEAD) {
 			fprintRTF("\\tab ");
 			ConvertString(g_preambleRHEAD);
@@ -1069,5 +1071,3 @@ purpose: writes header info for the RTF file
 	WriteHeadFoot();
 	WritePageSize();
 }
-
-

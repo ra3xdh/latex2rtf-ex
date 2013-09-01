@@ -42,12 +42,12 @@ VERSION="`scripts/version`"
 SRCS=commands.c chars.c direct.c encode.c l2r_fonts.c funct1.c tables.c ignore.c \
 	main.c stack.c cfg.c util.c parser.c lengths.c counters.c letterformat.c \
 	preamble.c equation.c convert.c xref.c definitions.c graphics.c \
-	mygetopt.c style.c tikz.c
+	mygetopt.c style.c tikz.c caption.c
 
 HDRS=commands.h chars.h direct.h encode.h l2r_fonts.h funct1.h tables.h ignore.h \
     main.h stack.h cfg.h util.h parser.h lengths.h counters.h letterformat.h \
     preamble.h equation.h convert.h xref.h definitions.h graphics.h encode_tables.h \
-    version.h mygetopt.h style.h tikz.h
+    version.h mygetopt.h style.h tikz.h caption.h
 
 CFGS=cfg/fonts.cfg cfg/direct.cfg cfg/ignore.cfg cfg/style.cfg \
     cfg/afrikaans.cfg cfg/bahasa.cfg cfg/basque.cfg cfg/brazil.cfg cfg/breton.cfg \
@@ -97,7 +97,7 @@ TEST=   test/Makefile test/bracecheck \
 OBJS=l2r_fonts.o direct.o encode.o commands.o stack.o funct1.o tables.o \
 	chars.o ignore.o cfg.o main.o util.o parser.o lengths.o counters.o \
 	preamble.o letterformat.o equation.o convert.o xref.o definitions.o graphics.o \
-	mygetopt.o style.o tikz.o
+	mygetopt.o style.o tikz.o caption.o
 
 all : uptodate latex2rtf
 
@@ -239,3 +239,5 @@ mygetopt.o: mygetopt.c main.h
 style.o: style.c main.h direct.h l2r_fonts.h cfg.h util.h parser.h
 tikz.o: tikz.c cfg.h main.h graphics.h tikz.h parser.h util.h commands.h \
  convert.h equation.h funct1.h
+caption.o: caption.c cfg.h main.h caption.h parser.h util.h commands.h \
+ convert.h funct1.h
