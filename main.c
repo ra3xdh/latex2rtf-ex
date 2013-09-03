@@ -102,6 +102,7 @@ char		   *g_config_path = NULL;
 char		   *g_script_path = NULL;
 char		   *g_tmp_path = NULL;
 char		   *g_preamble = NULL;
+char               *g_labelsep = NULL;
 char			g_field_separator = ',';
 bool 			g_escape_parent= TRUE;
 
@@ -144,6 +145,9 @@ int main(int argc, char **argv)
 		
 	SetEndianness();
 	progname = argv[0];
+
+        g_labelsep = malloc(8*sizeof(char));
+	strcpy(g_labelsep,": ");
 
 	InitializeStack();
 	InitializeLatexLengths();

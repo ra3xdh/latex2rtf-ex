@@ -203,7 +203,8 @@ l2r_fonts.o: l2r_fonts.c main.h convert.h l2r_fonts.h funct1.h commands.h \
   cfg.h parser.h stack.h
 funct1.o: funct1.c main.h convert.h funct1.h commands.h stack.h \
   l2r_fonts.h cfg.h ignore.h util.h encode.h parser.h counters.h \
-  lengths.h definitions.h preamble.h xref.h equation.h direct.h style.h
+  lengths.h definitions.h preamble.h xref.h equation.h direct.h style.h \
+  caption.h
 tables.o: tables.c main.h convert.h l2r_fonts.h commands.h funct1.h \
   tables.h stack.h cfg.h parser.h counters.h util.h lengths.h
 ignore.o: ignore.c main.h direct.h l2r_fonts.h cfg.h ignore.h funct1.h \

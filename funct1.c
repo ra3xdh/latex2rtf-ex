@@ -47,6 +47,8 @@ Authors:
 #include "equation.h"
 #include "direct.h"
 #include "style.h"
+#include "caption.h"
+
 
 extern bool     twocolumn;	/* true if twocolumn-mode is enabled */
 int				g_right_margin_indent;
@@ -958,7 +960,8 @@ CmdCaption(int code)
 	else
 		fprintRTF("%s", number);
 
-	fprintRTF(":  ");
+	//fprintRTF(":  ");
+	fprintRTF(g_labelsep);
 	thecaption = getBraceParam();
 	diagnostics(4, "in CmdCaption [%s]", thecaption);
 	ConvertString(thecaption);
@@ -1031,7 +1034,7 @@ CmdCaptionof(int code)
 	else*/
 		fprintRTF("%s", number);
 
-	fprintRTF(":  ");
+	fprintRTF(g_labelsep);
 	thecaption = getBraceParam();
 	diagnostics(4, "in CmdCaption [%s]", thecaption);
 	ConvertString(thecaption);

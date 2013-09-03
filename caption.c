@@ -42,6 +42,14 @@ Authors:
 
 void setPackageCaption(char *options)
 {
+    printf("%s\n",options);
 
+    char *sep = strstr(options,"labelsep");
+
+    if (sep) {
+        if (strstr(sep,"endash")) strcpy(g_labelsep," \\'96 ");
+	else 
+	if (strstr(sep,"period")) strcpy(g_labelsep," . ");
+    }
 }
 

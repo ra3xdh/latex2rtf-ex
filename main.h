@@ -56,6 +56,8 @@ extern			char *g_bbl_name;
 extern			char *g_home_dir;
 extern			char *progname;			/* name of the executable file */
 
+extern                  char *g_labelsep;
+
 extern bool		GermanMode;
 extern bool		FrenchMode;
 extern bool		RussianMode;
