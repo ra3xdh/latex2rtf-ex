@@ -244,8 +244,8 @@ CmdThebibliography(int code)
 		CmdVspace(VSPACE_SMALL_SKIP);
 
 		PushEnvironment(GENERIC_ENV);
-		setLength("parindent", -amount);
-		g_left_margin_indent += 2*amount;
+		//setLength("parindent", -amount);
+		//g_left_margin_indent += 2*amount;
 	} else {
 		CmdEndParagraph(0);
 		CmdVspace(VSPACE_SMALL_SKIP);
@@ -276,11 +276,12 @@ CmdBibitem(int code)
 	} else {
 		diagnostics(4,"CmdBibitem <%s>",s);
 		if (g_document_bibstyle == BIBSTYLE_STANDARD) {
-			fprintRTF("[");
+//			fprintRTF("[");
 			fprintRTF("{\\v\\*\\bkmkstart BIB_%s}",signet);
 			ConvertString(s);
 			fprintRTF("{\\*\\bkmkend BIB_%s}",signet);
-			fprintRTF("]");
+//			fprintRTF("]");
+                        fprintRTF(".");
 			fprintRTF("\\tab ");
 		}
 		/* else emit nothing for APALIKE */
