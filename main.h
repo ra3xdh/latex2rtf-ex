@@ -128,6 +128,8 @@ extern bool		g_equation_display_bitmap;
 extern bool		g_equation_comment;
 extern bool		g_little_endian;
 
+extern bool             g_tikz_extract;
+
 void fprintRTF(char *format, ...);
 void putRtfChar(char cThis);
 char *getTmpPath(void);

@@ -28,6 +28,8 @@ Authors:
 #include <ctype.h>
 #include <limits.h>
 #ifdef UNIX
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #endif
 #include "cfg.h"
@@ -75,7 +77,7 @@ void CmdTikzPicture(int code)
 void TikzToPng(char *tikzcode,char *exts)
 {
         char *fullname, *tmp_dir, *texname, *auxname, *logname,
-	        *pdfname;
+	        *pdfname, *pngname, *destname;
 
         FILE *f;
 	static int file_number = 0;
@@ -87,6 +89,7 @@ void TikzToPng(char *tikzcode,char *exts)
         tmp_dir = getTmpPath();
 	snprintf(name,15,"t2p_%04d",file_number);
 	fullname = strdup_together(tmp_dir,name);
+
 	texname = strdup_together(fullname,".tex");
 	pdfname = strdup_together(fullname,".pdf");
 	auxname = strdup_together(fullname,".aux");
@@ -136,15 +139,34 @@ void TikzToPng(char *tikzcode,char *exts)
 	chdir(tmp_dir);
 	int err = system(cmd);
 	chdir(oldcwd);
-	free(oldcwd);
+	free(cmd);
 
         if (!err) PutPdfFile(pdfname,g_png_figure_scale,0,TRUE);
+
+        if (g_tikz_extract) {
+	    struct stat st ={0};
+	    if (stat("tikz2png", &st) == -1) {
+	       mkdir("tikz2png",0755);
+	    }
+	    destname = strdup_together(oldcwd,"/tikz2png/");
+	    destname = strdup_together(destname,name);
+	    pngname = strdup_together(destname,".png");
+	    cmd_len = strlen("convert -alpha off -density 300x300 ")+strlen(destname)+strlen(pdfname)+32;
+	    cmd = (char *) malloc(cmd_len);
+	    snprintf(cmd,cmd_len,"convert -density 300x300 %s -alpha off %s ",pdfname,pngname);
+	    printf(cmd);
+	    system(cmd);
+	    free(cmd);
+	    free(destname);
+	    free(pngname);
+	}
 
         remove(texname);
 	remove(auxname);
 	remove(pdfname);
 	remove(logname);
 
+        free(oldcwd);
         free(fullname);
 	free(texname);
 	free(auxname);
