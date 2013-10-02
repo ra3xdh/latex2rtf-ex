@@ -128,7 +128,9 @@ extern bool		g_equation_display_bitmap;
 extern bool		g_equation_comment;
 extern bool		g_little_endian;
 
-extern bool             g_tikz_extract;
+extern bool             g_figs_extract;
+extern char             *g_figsdir;
+extern int              g_fignum;
 
 void fprintRTF(char *format, ...);
 void putRtfChar(char cThis);

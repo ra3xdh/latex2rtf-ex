@@ -143,14 +143,20 @@ void TikzToPng(char *tikzcode,char *exts)
 
         if (!err) PutPdfFile(pdfname,g_png_figure_scale,0,TRUE);
 
-        if (g_tikz_extract) {
+        if (g_figs_extract && g_processing_figure) {
 	    struct stat st ={0};
-	    if (stat("tikz2png", &st) == -1) {
-	       mkdir("tikz2png",0755);
+	    if (stat(g_figsdir, &st) == -1) {
+	       mkdir(g_figsdir,0755);
 	    }
-	    destname = strdup_together(oldcwd,"/tikz2png/");
-	    destname = strdup_together(destname,name);
-	    pngname = strdup_together(destname,".png");
+
+	    g_fignum++;
+            
+	    char *figname = (char *)malloc(15*sizeof(char));
+            snprintf(figname,15,"Ris%d.png",g_fignum);
+
+	    destname = strdup_together(g_figsdir,"/");
+	    pngname = strdup_together(destname,figname);
+
 	    cmd_len = strlen("convert -alpha off -density 300x300 ")+strlen(destname)+strlen(pdfname)+32;
 	    cmd = (char *) malloc(cmd_len);
 	    snprintf(cmd,cmd_len,"convert -density 300x300 %s -alpha off %s ",pdfname,pngname);

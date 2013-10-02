@@ -28,6 +28,8 @@ Authors:
 #include <ctype.h>
 #include <limits.h>
 #ifdef UNIX
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #endif
 #include "cfg.h"
@@ -1305,6 +1307,39 @@ code=4 => psfig
 		}
 		filename = getBraceParam();
 		diagnostics(1, "image scale = %g", scale);
+
+
+                if (g_figs_extract && g_processing_figure) {
+		   
+
+	           struct stat st ={0};
+	           if (stat(g_figsdir, &st) == -1) {
+	           mkdir(g_figsdir,0755);
+	           }
+                   
+		   g_fignum++;
+
+                   char *name = (char *)malloc(15*sizeof(char));
+		   snprintf(name,15,"Ris%d.png",g_fignum);
+
+	           char *destname = strdup_together(g_figsdir,"/");
+		   char *pngname = strdup_together(destname,name);
+
+	           int cmd_len = strlen("convert -alpha off -density 300x300 ")
+		                                   + strlen(destname) + strlen(filename)+32;
+	           char *cmd = (char *) malloc(cmd_len);
+
+	           snprintf(cmd,cmd_len,"convert -density 300x300 %s -alpha off %s ",filename,pngname);
+	           system(cmd);
+
+	           free(cmd);
+	           free(destname);
+	           free(pngname);
+		   free(name);
+	        }
+
+
+
 	}
 	
 	if (code==1) { /* \epsffile{filename.eps} */
